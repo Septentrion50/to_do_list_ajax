@@ -1,6 +1,16 @@
 <li>
-  <%= task.title  %>
-  <% unless task.deadline.nil? %>
-    , to read: <%= task.deadline.strftime('%D')  %>
-  <% end %>
+  <%= check_box_tag "task-" + task.id.to_s, 1, task.status , data: { 
+    remote: true, 
+    url: task_path(task.id), 
+    id: task.id,
+    params: { id: task.id, status: task.status}.to_param, 
+    method: "put" 
+  }, class: 'task-cb' %>
+  <span class="card-text">
+    <%= task.title  %>
+    <% unless task.deadline.nil? %>
+      , to read: <%= task.deadline.strftime('%D')  %>
+    <% end %>
+  </span>
+  <%= link_to "", task_path(task), method: :delete, remote: true, class: "fa fa-trash"%>
 </li>

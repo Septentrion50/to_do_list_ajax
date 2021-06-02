@@ -1,0 +1,6 @@
+#card-list li {
+    input[type="checkbox"]:checked + .card-text {
+        text-decoration: line-through;
+        transition: all;
+    }
+}

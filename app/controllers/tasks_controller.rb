@@ -27,10 +27,17 @@ before_action :authenticate_user!
   end
 
   def update
+    @flash = "Task edited"
     @task = Task.find(params[:id])
+    @task.status = params[:status]
     @task.update(task_params)
-    redirect_to tasks_path
-    flash[:notice] = "Task edited"
+    respond_to do |format|
+      format.html {
+        redirect_to tasks_path
+        flash.now[:notice] = @flash
+      }
+      format.js {}
+    end
   end
 
   def index
@@ -38,16 +45,23 @@ before_action :authenticate_user!
   end
 
   def destroy
+    @flash = "Task destroyed"
     @task = Task.find(params[:id])
     @task.destroy
-    redirect_to root_path
+    respond_to do |format|
+    format.html {
+      redirect_to root_path
+      flash.now[:notice] = @flash
+    }
+    format.js {}
+    end
   end
 
 
   private
 
   def task_params
-    params.permit(:title, :deadline, :description)
+    params.permit(:title, :deadline, :description, :id, :status)
   end
 
   def category_params
